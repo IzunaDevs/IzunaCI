@@ -30,17 +30,18 @@ def git_hook():
     print("="*40)
     if not err:
         end_data = {
-            "status": "success",
+            "state": "success",
             "description": "The build passed!"
         }
     else:
         end_data = {
-            "status": "failed",
+            "state": "failed",
             "description": "The build failed!"
         }
 
     resp = requests.post(url, data=end_data.update(base_data),
-                         headers={"Authorization": f"token {CI_TOKEN}"})
+                         headers={"Authorization": f"token {CI_TOKEN}",
+                                  "Content-Type": "application/json"})
     print(resp.json)
     print("="*40)
     return Response("OK", 200)
