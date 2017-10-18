@@ -1,9 +1,12 @@
+import os
 import json
 
 from flask import Flask, request, Response
 import requests
 
 ci_app = Flask("IzunaCI")
+
+CI_TOKEN = os.environ["CI_TOKEN"]
 
 base_data = {
     "target_url": "https://martmists.com/check_status",
@@ -36,7 +39,8 @@ def git_hook():
             "description": "The build failed!"
         }
 
-    resp = requests.post(url, data=end_data.update(base_data))
+    resp = requests.post(url, data=end_data.update(base_data),
+                         headers={"Authorization": f"token {CI_TOKEN}"})
     print(resp.json)
     print("="*40)
     return Response("OK", 200)
