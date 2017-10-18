@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, Response
 import requests
 
@@ -11,7 +13,7 @@ base_data = {
 
 @ci_app.route("/git_hook", methods=["POST"])
 def git_hook():
-    data = request.data.decode()
+    data = json.loads(request.data.decode())
     commit = data["commits"][0]
     files = commit["added"] + commit["modified"]
     owner, repo = data["repository"]["full_name"].split("/")
@@ -22,7 +24,6 @@ def git_hook():
     print("  Url:", url)
     print(" Repo:", repo)
     print("  SHA:", sha)
-    print("="*40)
     if not err:
         end_data = {
             "status": "success",
