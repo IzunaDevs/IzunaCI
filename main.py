@@ -24,6 +24,7 @@ def git_hook():
     print("  Url:", url)
     print(" Repo:", repo)
     print("  SHA:", sha)
+    print("="*40)
     if not err:
         end_data = {
             "status": "success",
@@ -35,7 +36,9 @@ def git_hook():
             "description": "The build failed!"
         }
 
-    requests.post(url, data=end_data.update(base_data))
+    resp = requests.post(url, data=end_data.update(base_data))
+    print(resp.json)
+    print("="*40)
     return Response("OK", 200)
 
 
